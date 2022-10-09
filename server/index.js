@@ -3,8 +3,12 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
+import Postroutes from "./routes/posts.js";
+
 /**Initialize express framework */
 const app = express();
+
+app.use("/posts", Postroutes);
 
 /**Set parser for jason body when get information for client and url code */
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
