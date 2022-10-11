@@ -6,13 +6,13 @@ import Form from "./components/form/Form";
 import useStyles from "./styles.js";
 import { useDispatch } from "react-redux";
 import { getPosts } from "./actions/posts";
+import "./index.css";
 
 const App = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("useEfect");
     dispatch(getPosts());
   }, [dispatch]);
 
