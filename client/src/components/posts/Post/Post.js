@@ -7,14 +7,18 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import moment from "moment";
 import useStyles from "./styles";
+import { deletePost, likeToPost } from "../../../actions/posts";
 
-const Post = ({ post }) => {
+const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
+  /**Function for send actions type to the reducer*/
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.card}>
@@ -30,7 +34,11 @@ const Post = ({ post }) => {
         </Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button style={{ color: "white" }} size="small" onClick={() => {}}>
+        <Button
+          style={{ color: "white" }}
+          size="small"
+          onClick={() => setCurrentId(post._id)}
+        >
           <MoreHorizIcon fontSize="medium" />
         </Button>
       </div>
@@ -39,18 +47,34 @@ const Post = ({ post }) => {
           {post.tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
+      <Typography className={classes.title} variant="h5">
+        {post.title}
+      </Typography>
       <CardContent>
-        <Typography className={classes.title} variant="h5" gutterBottom>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          gutterBottom
+        >
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likeToPost(post._id))}
+        >
           <ThumbUpAltIcon fontSize="small" />
-          Like
-          {post.likeCount}
+          &nbsp; Like &nbsp;
+          {post.likeCoun}
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(deletePost(post._id))}
+        >
           <DeleteIcon fontSize="small" />
           Delete
         </Button>
