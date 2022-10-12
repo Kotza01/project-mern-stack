@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
-import memories from "./images/memories.png";
-import Posts from "./components/posts/Posts";
-import Form from "./components/form/Form";
-import useStyles from "./styles.js";
-import { useDispatch } from "react-redux";
+import { Container } from "@material-ui/core";
 import { getPosts } from "./actions/posts";
+import { useDispatch } from "react-redux";
+import { HashRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar/Navbar";
+import useStyles from "./styles.js";
 import "./index.css";
+import Home from "./components/Home/Home";
+import Auth from "./components/Auth/Auth";
 
 const App = () => {
   /**Id for update or send new Post */
@@ -21,37 +23,24 @@ const App = () => {
   }, [dispatch, currentId]);
 
   return (
-    <Container maxWidth="lg">
-      <AppBar className={classes.appBar} position="static" color="inherit">
-        <Typography className={classes.heading} variant="h2" align="center">
-          Memories
-        </Typography>
-        <img
-          className={classes.image}
-          src={memories}
-          alt="Memories"
-          height="60"
-        />
-      </AppBar>
-      <Grow in>
-        <Container>
-          <Grid
-            container
-            className={classes.mainContainer}
-            justifyContent="space-between"
-            alignItems="stretch"
-            spacing={3}
-          >
-            <Grid item xs={12} sm={7}>
-              <Posts setCurrentId={setCurrentId}></Posts>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Form currentId={currentId} setCurrentId={setCurrentId}></Form>
-            </Grid>
-          </Grid>
-        </Container>
-      </Grow>
-    </Container>
+    <HashRouter>
+      <Container maxWidth="lg">
+        <Navbar />
+        <Routes>
+          <Route
+            index
+            element={
+              <Home
+                classes={classes}
+                currentId={currentId}
+                setCurrentId={setCurrentId}
+              />
+            }
+          />
+          <Route path="/auth" element={<Auth />} />
+        </Routes>
+      </Container>
+    </HashRouter>
   );
 };
 

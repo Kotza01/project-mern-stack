@@ -18,6 +18,9 @@ app.use(cors());
 
 app.use("/posts", Postroutes);
 
+/**Url to connect data base */
+/* const URL_CONNECTION =
+  "mongodb+srv://luismermproject:luismermproject123@cluster0.zu5dtq3.mongodb.net/?retryWrites=true&w=majority"; */
 const PORT = process.env.PORT || 5000;
 
 /**Connect to dataBase, if successfully, listen in port, if not, error message to console */
