@@ -15,11 +15,21 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import Icon from "./Icon";
-import { auth } from "../../actions/auth";
+import { auth, singIn, singUp } from "../../actions/auth";
+
+const initialForm = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const classes = markStyle();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState(initialForm);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,12 +47,20 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSignUp) {
+      dispatch(singUp(formData, navigate));
+    } else {
+      dispatch(singIn(formData, navigate));
+    }
+    console.log(formData);
   };
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const switchMode = () => {
     setIsSignUp((prevSign) => !prevSign);
@@ -70,8 +88,6 @@ const Auth = () => {
     console.log(error.details);
     console.log("Error when connect to google");
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div>

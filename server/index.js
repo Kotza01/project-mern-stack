@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
 import Postroutes from "./routes/posts.js";
+import usersRoutes from "./routes/users.js";
 
 /**Initialize express framework */
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/posts", Postroutes);
+app.use("/users", usersRoutes);
 
 /**Url to connect data base */
 /* const URL_CONNECTION =
