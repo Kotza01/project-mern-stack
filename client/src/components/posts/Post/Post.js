@@ -49,9 +49,8 @@ const Post = ({ post, setCurrentId }) => {
     );
   };
 
-  console.log(post);
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised elevation={6}>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
@@ -63,7 +62,7 @@ const Post = ({ post, setCurrentId }) => {
           {moment(post.createdAt).fromNow()}
         </Typography>
       </div>
-      <div className={classes.overlay2}>
+      <div className={classes.overlay2} name="edit">
         {post?.creator === userId && (
           <Button
             style={{ color: "white" }}
@@ -75,20 +74,20 @@ const Post = ({ post, setCurrentId }) => {
         )}
       </div>
       <div className={classes.details}>
-        <Typography variant="body2" color="textSecondary">
+        <Typography variant="body2" color="textSecondary" component="h2">
           {post.tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
-      <Typography className={classes.title} variant="h5">
+      <Typography
+        className={classes.title}
+        gutterBottom
+        variant="h5"
+        component="h2"
+      >
         {post.title}
       </Typography>
       <CardContent>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          component="p"
-          gutterBottom
-        >
+        <Typography variant="body2" color="textSecondary" component="p">
           {post.message}
         </Typography>
       </CardContent>

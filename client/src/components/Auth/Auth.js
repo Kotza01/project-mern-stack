@@ -33,6 +33,7 @@ const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  /**Efect for login with google */
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -45,6 +46,7 @@ const Auth = () => {
     gapi.load("client:auth2", start);
   }, []);
 
+  /**Dispatch function depending on whether you are singUp or singIn  */
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignUp) {
@@ -55,26 +57,31 @@ const Auth = () => {
     console.log(formData);
   };
 
+  /**Change show password or not */
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
+  /**Change value of the form input */
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  /**Switch login and sing up */
   const switchMode = () => {
     setIsSignUp((prevSign) => !prevSign);
     setShowPassword(false);
   };
 
   const googleSuccess = async (success) => {
-    /**Do everything about the error */
-    console.log(success);
+    /**get result, token and send to the backend for save
+     */
     const result = success?.profileObj;
     const token = success?.tokenId;
 
     try {
+      /**Dispatch function */
       dispatch(auth({ result, token }));
+      /**Navigate to Home path */
       navigate("/");
     } catch (error) {
       console.log(error);

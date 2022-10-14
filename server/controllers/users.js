@@ -36,7 +36,7 @@ export const singIn = async (req, res) => {
 
 export const singUp = async (req, res) => {
   const { firstName, lastName, password, confirmPassword, email } = req.body;
-  console.log("LLEGAMOS");
+
   try {
     const existPerson = await User.findOne({ email });
 

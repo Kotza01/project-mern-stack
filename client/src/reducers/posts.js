@@ -1,4 +1,10 @@
-import { FETCHAll, FETCHDELETE, FETCHSEND, FETCHUPDATE } from "../types";
+import {
+  FETCHAll,
+  FETCHDELETE,
+  FETCHSEND,
+  FETCHUPDATE,
+  FETCH_BY_SEARCH,
+} from "../types";
 
 /**Actions to update the state are done here
  *
@@ -7,6 +13,8 @@ const reducer = (state = [], action) => {
   switch (action.type) {
     /**Push all data from server in the state */
     case FETCHAll:
+      return action.payload;
+    case FETCH_BY_SEARCH:
       return action.payload;
     /**Add new Post to the server*/
     case FETCHSEND:

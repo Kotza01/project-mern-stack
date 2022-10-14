@@ -1,43 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container } from "@material-ui/core";
-import { getPosts } from "./actions/posts";
-import { useDispatch } from "react-redux";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
-import useStyles from "./styles.js";
 import "./index.css";
 import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
+import PostDetails from "./components/PostDetails/PostDetails";
 
 const App = () => {
-  /**Id for update or send new Post */
-  const [currentId, setCurrentId] = useState(null);
-  /**Styles */
-  const classes = useStyles();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    /**Get all post from server */
-    dispatch(getPosts());
-  }, [dispatch, currentId]);
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <HashRouter>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Navbar />
         <Routes>
+          <Route index element={<Navigate to="/posts" replace={true} />} />
+          <Route path="/posts" element={<Home />} />
+          <Route path="/posts/search" element={<Home />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
           <Route
-            index
-            element={
-              <Home
-                classes={classes}
-                currentId={currentId}
-                setCurrentId={setCurrentId}
-              />
-            }
+            path="/auth"
+            element={user ? <Navigate to="/posts" replace={true} /> : <Auth />}
           />
-          <Route path="/auth" element={<Auth />} />
         </Routes>
       </Container>
     </HashRouter>

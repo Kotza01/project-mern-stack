@@ -1,5 +1,11 @@
 import * as api from "../api";
-import { FETCHAll, FETCHDELETE, FETCHSEND, FETCHUPDATE } from "../types";
+import {
+  FETCHAll,
+  FETCHDELETE,
+  FETCHSEND,
+  FETCHUPDATE,
+  FETCH_BY_SEARCH,
+} from "../types";
 
 /**Function for get all Post in the data base from server */
 export const getPosts = () => async (dispatch) => {
@@ -11,6 +17,22 @@ export const getPosts = () => async (dispatch) => {
     dispatch(actions);
   } catch (error) {
     console.log("erros.message");
+  }
+};
+
+export const searchPost = (searchQuery) => async (dispatch) => {
+  console.log("Search query action", searchQuery);
+  try {
+    const {
+      data: { data },
+    } = await api.fecthPostsBySearch({
+      search: searchQuery.search,
+      tags: searchQuery.tags.join(","),
+    });
+
+    dispatch({ type: FETCH_BY_SEARCH, payload: data });
+  } catch (error) {
+    console.log(error);
   }
 };
 

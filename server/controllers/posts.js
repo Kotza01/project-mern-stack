@@ -12,10 +12,26 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
+/**Search any Post by tags or title*/
+export const getBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  const title = new RegExp(searchQuery, "i");
+
+  try {
+    const data = await postMessage.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+
+    res.json({ data });
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
 /**Function for createNewPost */
 export const createPost = async (req, res) => {
   const post = req.body;
-  console.log("req: ", req.userId);
+
   if (!req.userId) return res.status(404).json({ message: "Unauthenticated" });
 
   const newPost = postMessage({

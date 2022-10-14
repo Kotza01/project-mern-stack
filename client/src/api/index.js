@@ -16,6 +16,10 @@ const USERS = "/users";
 
 /**petition to post */
 export const fecthPosts = () => API.get(POSTS);
+export const fecthPostsBySearch = (querySearch) =>
+  API.get(
+    `${POSTS}/search?searchQuery=${querySearch.search}&tags=${querySearch.tags}`
+  );
 export const fetchCreatePosts = (post) => API.post(POSTS, post);
 export const fetchUpdatePost = (currentId, post) =>
   API.patch(`${POSTS}/${currentId}`, post);

@@ -8,7 +8,7 @@ const Posts = ({ setCurrentId }) => {
   /**Get post from state in redux */
   const posts = useSelector((posts) => posts.posts);
   const classes = useStyles();
-  console.log(posts);
+
   /**If not have post push loading */
   return !posts.length ? (
     <CircularProgress />
@@ -20,7 +20,7 @@ const Posts = ({ setCurrentId }) => {
       spacing={3}
     >
       {posts.map((post) => (
-        <Grid key={post._id} item sm={6} xs={12}>
+        <Grid key={post._id} item lg={3} md={6} sm={12} xs={12}>
           <Post post={post} setCurrentId={setCurrentId}></Post>
         </Grid>
       ))}

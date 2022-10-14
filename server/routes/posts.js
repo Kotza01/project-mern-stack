@@ -9,9 +9,11 @@ import {
   updatePost,
   deletePost,
   likeToPost,
+  getBySearch,
 } from "../controllers/posts.js";
 
 Routes.get("/", getAllPosts);
+Routes.get("/search", getBySearch);
 Routes.post("/", auth, createPost);
 Routes.patch("/:id", auth, updatePost);
 Routes.delete("/:id", auth, deletePost);
