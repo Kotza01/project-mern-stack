@@ -7,6 +7,7 @@ const reducerAuth = (state = { authData: null }, action) => {
       return { authData: action.payload };
     case LOGOUT:
       localStorage.clear();
+      action.payload("/auth");
       return { authData: null };
     default:
       return state;

@@ -6,11 +6,13 @@ import { Grid, CircularProgress } from "@material-ui/core";
 
 const Posts = ({ setCurrentId }) => {
   /**Get post from state in redux */
-  const posts = useSelector((posts) => posts.posts);
+  const { posts, isLoading } = useSelector((posts) => posts.posts);
   const classes = useStyles();
 
+  if (!posts && !isLoading) return <h2>No Posts!!</h2>;
+
   /**If not have post push loading */
-  return !posts.length ? (
+  return isLoading ? (
     <CircularProgress />
   ) : (
     <Grid

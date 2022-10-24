@@ -3,8 +3,37 @@ import postMessage from "../models/postMessage.js";
 
 /**Function for get all posts in the data base */
 export const getAllPosts = async (req, res) => {
+  const { page } = req.query;
+
   try {
-    const post = await postMessage.find();
+    const LIMIT = 8;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    const total = await postMessage.countDocuments({});
+    const post = await postMessage
+      .find()
+      .sort({ _id: -1 })
+      .limit(LIMIT)
+      .skip(startIndex);
+
+    res.status(200).json({
+      posts: post,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / LIMIT),
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+/**Function for get all posts in the data base */
+export const getOnePosts = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(404).json({ message: "Id is incorret" });
+
+    const post = await postMessage.findById(id);
 
     res.status(200).json(post);
   } catch (error) {
@@ -21,7 +50,6 @@ export const getBySearch = async (req, res) => {
     const data = await postMessage.find({
       $or: [{ title }, { tags: { $in: tags.split(",") } }],
     });
-
     res.json({ data });
   } catch (error) {
     res.status(404).json({ message: error });
@@ -102,4 +130,21 @@ export const likeToPost = async (req, res) => {
   let likedPost = await postMessage.findByIdAndUpdate(id, post, { new: true });
 
   res.json(likedPost);
+};
+
+export const commentToPost = async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+  try {
+    let post = await postMessage.findById(id);
+    post.comments.push(value);
+
+    const updatePost = await postMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
+
+    res.json(post);
+  } catch (error) {
+    console.log(error);
+  }
 };

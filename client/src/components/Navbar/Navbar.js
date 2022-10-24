@@ -1,11 +1,13 @@
-import { AppBar, Avatar, Typography, Toolbar, Button } from "@material-ui/core";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import memories from "../../images/memories.png";
 import React, { useEffect, useState } from "react";
-import markStyle from "./styles";
-import decode from "jwt-decode";
-import { logout } from "../../actions/auth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import decode from "jwt-decode";
+import { AppBar, Avatar, Typography, Toolbar, Button } from "@material-ui/core";
+
+import markStyle from "./styles";
+import memories from "../../images/memories.png";
+import memoriesText from "../../images/memoriesText.png";
+import { logout } from "../../actions/auth";
 
 const Navbar = () => {
   const classes = markStyle();
@@ -27,37 +29,33 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/auth");
+    dispatch(logout(navigate));
     setUser(null);
   };
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
-        <Typography
-          component={Link}
-          to="/"
-          className={classes.heading}
-          variant="h2"
-          align="center"
-        >
-          Memories
-        </Typography>
+      <Link to="/" className={classes.brandContainer}>
+        <img
+          className={classes.image}
+          src={memoriesText}
+          alt="icon"
+          height="40px"
+        />
         <img
           className={classes.image}
           src={memories}
           alt="Memories"
-          height="60"
+          height="45"
         />
-      </div>
+      </Link>
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
             <Avatar
               className={classes.purple}
-              alt={user.result.name}
-              src={user.result.imageUrl}
+              alt={user?.result.name}
+              src={user?.result.imageUrl}
             >
               {user.result.name.charAt(0)}
             </Avatar>

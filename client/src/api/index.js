@@ -15,7 +15,8 @@ const POSTS = "/posts";
 const USERS = "/users";
 
 /**petition to post */
-export const fecthPosts = () => API.get(POSTS);
+export const fecthPosts = (page) => API.get(`POSTS?page=${page}`);
+export const fecthOnePosts = (id) => API.get(`${POSTS}/${id}`);
 export const fecthPostsBySearch = (querySearch) =>
   API.get(
     `${POSTS}/search?searchQuery=${querySearch.search}&tags=${querySearch.tags}`
@@ -25,6 +26,8 @@ export const fetchUpdatePost = (currentId, post) =>
   API.patch(`${POSTS}/${currentId}`, post);
 export const fetchDeletePost = (id) => API.delete(`${POSTS}/${id}`);
 export const fetchLikeToPost = (id) => API.patch(`${POSTS}/${id}/likePost`);
+export const fetchCommentPosts = (id, value) =>
+  API.patch(`${POSTS}/${id}/comment`, value);
 
 /**Petition to users */
 export const fetchSignIn = (formData) => API.post(`${USERS}/signin`, formData);

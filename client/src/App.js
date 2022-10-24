@@ -9,7 +9,7 @@ import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
+  let user = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <HashRouter>

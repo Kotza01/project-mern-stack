@@ -10,14 +10,14 @@ import {
 import ChipInput from "material-ui-chip-input";
 
 import { useNavigate, useLocation } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import Form from "../form/Form";
 import Posts from "../posts/Posts";
 import Pagination from "../Pagination";
 import useStyles from "./styles";
-import { getPosts, searchPost } from "../../actions/posts";
+import { searchPost } from "../../actions/posts";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -34,14 +34,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const query = useQuery();
-  const page = query.get("page");
-  const searchQuery = query.get("search");
-  console.log(page, searchQuery);
-
-  useEffect(() => {
-    /**Get all post from server */
-    dispatch(getPosts());
-  }, [dispatch, currentId]);
+  const page = query.get("page") || 1;
 
   /**Handle press enter in the search button */
   const handleKeyDown = (e) => {
@@ -64,6 +57,7 @@ const Home = () => {
       dispatch(
         searchPost({ search: search.trim() || "none", tags: tags || ["none"] })
       );
+      navigate(`/posts/search?searchQuery=${search}&tags=${tags}`);
     } else {
       navigate("/");
     }
@@ -120,8 +114,8 @@ const Home = () => {
               </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId}></Form>
-            <Paper elevation={6}>
-              <Pagination />
+            <Paper elevation={6} className={classes.pagination}>
+              <Pagination page={page} />
             </Paper>
           </Grid>
         </Grid>

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
-import FileBase from "react-file-base64";
-import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import FileBase from "react-file-base64";
+
+import { TextField, Button, Typography, Paper } from "@material-ui/core";
+
+import useStyles from "./styles";
 import { createPost, updatePost } from "../../actions/posts";
 
 const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"))?.result;
+  const navigate = useNavigate();
 
   /**State for managment form data */
   const [postData, setPostData] = useState({
@@ -19,7 +23,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   /**If have id, search post by this id  */
   const post = useSelector((posts) =>
-    currentId ? posts.posts.find((el) => el._id === currentId) : null
+    currentId ? posts.posts.posts.find((el) => el._id === currentId) : null
   );
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const Form = ({ currentId, setCurrentId }) => {
     if (currentId) {
       dispatch(updatePost(currentId, { ...postData, name: user?.name }));
     } else {
-      dispatch(createPost({ ...postData, name: user?.name }));
+      dispatch(createPost({ ...postData, name: user?.name }, navigate));
     }
 
     clear();
@@ -59,7 +63,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   if (!user?.name) {
     return (
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={6}>
         <Typography variant="h6" align="center">
           Please sign In to share your memories and like other`s memories
         </Typography>
