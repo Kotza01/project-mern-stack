@@ -27,4 +27,10 @@ export default makeStyles((theme) => ({
   googleButton: {
     marginBottom: theme.spacing(2),
   },
+  singInFailed: {
+    marginTop: theme.spacing(2),
+    textAlign: "center",
+    backgroundColor: theme.palette.error.main,
+    color: "white",
+  },
 }));

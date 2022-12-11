@@ -37,7 +37,7 @@ const CommentSection = ({ post }) => {
             ))
           ) : (
             <Typography gutterBottom variant="subtitle1">
-              No hay comentarios para este Post
+              No comments yet
             </Typography>
           )}
           <div ref={commentRef}></div>

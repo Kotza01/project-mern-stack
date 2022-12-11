@@ -30,6 +30,7 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(initialForm);
+  const [singInFailed, setSingInFailed] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,14 +48,16 @@ const Auth = () => {
   }, []);
 
   /**Dispatch function depending on whether you are singUp or singIn  */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let successfullySingIn = true;
     if (isSignUp) {
       dispatch(singUp(formData, navigate));
     } else {
-      dispatch(singIn(formData, navigate));
+      successfullySingIn = await dispatch(singIn(formData));
     }
-    console.log(formData);
+    setSingInFailed(successfullySingIn);
+    if (!successfullySingIn) navigate("/");
   };
 
   /**Change show password or not */
@@ -148,6 +151,11 @@ const Auth = () => {
                 />
               )}
             </Grid>
+            <Paper className={classes.singInFailed}>
+              <Typography variant="h6">
+                {singInFailed && "Password or gmail incorrect"}
+              </Typography>
+            </Paper>
             <Button
               type="submit"
               fullWidth

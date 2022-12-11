@@ -6,16 +6,17 @@ export const auth = (result) => (dispatch) => {
 };
 
 export const logout = (navigate) => (dispatch) => {
-  dispatch({ type: LOGOUT, payload : navigate });
+  dispatch({ type: LOGOUT, payload: navigate });
+  navigate("/auth");
 };
 
-export const singIn = (dataForm, navigate) => async (dispatch) => {
+export const singIn = (dataForm) => async (dispatch) => {
   try {
     const { data } = await api.fetchSignIn(dataForm);
     dispatch({ type: AUTH, payload: data });
-    navigate("/");
+    return false;
   } catch (error) {
-    console.log(error);
+    return true;
   }
 };
 

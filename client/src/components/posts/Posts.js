@@ -2,7 +2,12 @@ import React from "react";
 import Post from "./Post/Post";
 import useStyles from "./styles";
 import { useSelector } from "react-redux";
-import { Grid, CircularProgress } from "@material-ui/core";
+import {
+  Grid,
+  CircularProgress,
+  Typography,
+  Container,
+} from "@material-ui/core";
 
 const Posts = ({ setCurrentId }) => {
   /**Get post from state in redux */
@@ -21,11 +26,19 @@ const Posts = ({ setCurrentId }) => {
       alignItems="stretch"
       spacing={3}
     >
-      {posts.map((post) => (
-        <Grid key={post._id} item lg={3} md={6} sm={12} xs={12}>
-          <Post post={post} setCurrentId={setCurrentId}></Post>
-        </Grid>
-      ))}
+      {posts.length > 0 ? (
+        posts.map((post) => (
+          <Grid key={post._id} item lg={3} md={6} sm={12} xs={12}>
+            <Post post={post} setCurrentId={setCurrentId}></Post>
+          </Grid>
+        ))
+      ) : (
+        <Container justifycontent="center" aligncontent="center">
+          <Typography style={{ textAlign: "center" }} variant="h4">
+            No matches
+          </Typography>
+        </Container>
+      )}
     </Grid>
   );
 };

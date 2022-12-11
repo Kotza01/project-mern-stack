@@ -7,6 +7,7 @@ import { TextField, Button, Typography, Paper } from "@material-ui/core";
 
 import useStyles from "./styles";
 import { createPost, updatePost } from "../../actions/posts";
+import ChipInput from "material-ui-chip-input";
 
 const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
     title: "",
     message: "",
-    tags: "",
+    tags: [],
     selectedFile: "",
   });
 
@@ -25,6 +26,15 @@ const Form = ({ currentId, setCurrentId }) => {
   const post = useSelector((posts) =>
     currentId ? posts.posts.posts.find((el) => el._id === currentId) : null
   );
+
+  const handleAddTag = (tag) => {
+    setPostData({ ...postData, tags: [...postData.tags, tag.trim()] });
+  };
+
+  const handleDeleteTags = (deleteTag) => {
+    let newTags = postData.tags.filter((tag) => tag !== deleteTag);
+    setPostData({ ...postData, tags: newTags });
+  };
 
   useEffect(() => {
     /**If have id, add data from the post to the form */
@@ -56,7 +66,7 @@ const Form = ({ currentId, setCurrentId }) => {
       creator: "",
       title: "",
       message: "",
-      tags: "",
+      tags: [],
       selectedFile: "",
     });
   };
@@ -102,16 +112,15 @@ const Form = ({ currentId, setCurrentId }) => {
             setPostData({ ...postData, message: e.target.value })
           }
         />
-        <TextField
-          name="tags"
-          variant="outlined"
-          label="Tags"
-          fullWidth
+        <ChipInput
+          style={{ margin: "10px 0", width: "95%" }}
           value={postData.tags}
-          onChange={(e) =>
-            setPostData({ ...postData, tags: e.target.value.split(",") })
-          }
+          label="Tags"
+          variant="outlined"
+          onAdd={handleAddTag}
+          onDelete={handleDeleteTags}
         />
+
         <div className={classes.fileInput}>
           <FileBase
             type="file"

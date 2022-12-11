@@ -16,7 +16,7 @@ export const getPosts = (page) => async (dispatch) => {
     dispatch({ type: FETCHSTARTLOADING });
     /**Get post from server by axios */
     const { data } = await api.fecthPosts(page);
-    console.log(data);
+
     const actions = { type: FETCHAll, payload: data };
     /**Dispatch action for update state or do something in the reducer method */
     dispatch(actions);
@@ -42,7 +42,6 @@ export const getOnePosts = (id) => async (dispatch) => {
 };
 
 export const searchPost = (searchQuery) => async (dispatch) => {
-  console.log("Search query action", searchQuery);
   try {
     dispatch({ type: FETCHSTARTLOADING });
 
@@ -52,7 +51,7 @@ export const searchPost = (searchQuery) => async (dispatch) => {
       search: searchQuery.search,
       tags: searchQuery.tags.join(","),
     });
-    console.log(data);
+
     dispatch({ type: FETCH_BY_SEARCH, payload: data });
     dispatch({ type: FETCHENDLOADING });
   } catch (error) {
@@ -63,8 +62,9 @@ export const searchPost = (searchQuery) => async (dispatch) => {
 export const createPost = (post, navigate) => async (dispatch) => {
   try {
     /**Get post from server by axios */
+
     const { data } = await api.fetchCreatePosts(post);
-    /**Dispatch action for update state or do something in the reducer method */
+    /*Dispatch action for update state or do something in the reducer method */
     dispatch({
       type: FETCHSEND,
       payload: data,
@@ -87,12 +87,13 @@ export const updatePost = (currentId, post) => async (dispatch) => {
 };
 
 /**Function for delete Post */
-export const deletePost = (currentId) => async (dispatch) => {
+export const deletePost = (currentId, navigate) => async (dispatch) => {
   try {
     /**Delete  by id */
     await api.fetchDeletePost(currentId);
     /**Dispatch function */
     dispatch({ type: FETCHDELETE, payload: currentId });
+    navigate("/");
   } catch (error) {
     console.log(error);
   }
